@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Rules Engine - Runs first to generate alerts
+  rules:
+    build:
+      context: ./rules
+      dockerfile: Dockerfile
+    container_name: energy-soc-rules
+    volumes:
+      - ./data:/data:ro          # Read-only access to static data
+      - ./shared:/shared         # Shared volume for alerts.json
+    restart: "no"                # Run once and exit
+    networks:
+      - soc-network
+
+  # AI Agent - Runs after rules to generate triage
+  agent:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    container_name: energy-soc-agent
+    volumes:
+      - ./shared:/shared         # Shared volume for alerts.json and triage.json
+    depends_on:
+      rules:
+        condition: service_completed_successfully
+    restart: "no"                # Run once and exit
+    networks:
+      - soc-network
+
+  # Web Dashboard - Runs continuously
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: energy-soc-web
+    ports:
+      - "8080:8080"              # Expose dashboard on localhost:8080
+    volumes:
+      - ./shared:/shared         # Shared volume for triage.json and feedback.json
+    depends_on:
+      agent:
+        condition: service_completed_successfully
+    restart: unless-stopped      # Keep running
+    networks:
+      - soc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  soc-network:
+    driver: bridge
+
+volumes:
+  shared-data:

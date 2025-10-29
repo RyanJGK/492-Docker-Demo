@@ -1,0 +1,46 @@
+{
+  "scan_date": "2025-10-29",
+  "scanner": "OpenVAS",
+  "vulnerabilities": [
+    {
+      "host": "ems-server-1",
+      "cve": "CVE-2023-12345",
+      "severity": "HIGH",
+      "description": "Remote code execution vulnerability in IIS",
+      "cvss_score": 8.5,
+      "remediation": "Apply security patch MS-2023-1234"
+    },
+    {
+      "host": "ops-server-2",
+      "cve": "CVE-2023-67890",
+      "severity": "MEDIUM",
+      "description": "SQL injection vulnerability in PostgreSQL web interface",
+      "cvss_score": 6.2,
+      "remediation": "Update PostgreSQL to version 13.8+"
+    },
+    {
+      "host": "legacy-hmi-1",
+      "cve": "CVE-2014-00001",
+      "severity": "CRITICAL",
+      "description": "Multiple unpatched vulnerabilities in Windows XP",
+      "cvss_score": 9.8,
+      "remediation": "Upgrade OS - Windows XP is end of life"
+    },
+    {
+      "host": "fileserver-1",
+      "cve": "CVE-2023-11111",
+      "severity": "MEDIUM",
+      "description": "SMB protocol weakness allowing man-in-the-middle",
+      "cvss_score": 5.9,
+      "remediation": "Enable SMB signing and encryption"
+    },
+    {
+      "host": "backup-server-3",
+      "cve": "CVE-2023-22222",
+      "severity": "LOW",
+      "description": "Outdated MySQL version with known DoS vulnerability",
+      "cvss_score": 4.1,
+      "remediation": "Update MySQL to latest stable version"
+    }
+  ]
+}
