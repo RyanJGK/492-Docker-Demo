@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Sector Security Operations Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --critical-color: #dc3545;
+            --high-color: #fd7e14;
+            --medium-color: #ffc107;
+            --low-color: #20c997;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header-card {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .alert-card {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .alert-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .alert-header {
+            padding: 20px;
+            border-left: 5px solid;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .alert-header.CRITICAL {
+            border-left-color: var(--critical-color);
+            background: linear-gradient(to right, rgba(220, 53, 69, 0.1), transparent);
+        }
+        
+        .alert-header.HIGH {
+            border-left-color: var(--high-color);
+            background: linear-gradient(to right, rgba(253, 126, 20, 0.1), transparent);
+        }
+        
+        .alert-header.MEDIUM {
+            border-left-color: var(--medium-color);
+            background: linear-gradient(to right, rgba(255, 193, 7, 0.1), transparent);
+        }
+        
+        .alert-header.LOW {
+            border-left-color: var(--low-color);
+            background: linear-gradient(to right, rgba(32, 201, 151, 0.1), transparent);
+        }
+        
+        .severity-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        
+        .severity-CRITICAL {
+            background: var(--critical-color);
+            color: white;
+        }
+        
+        .severity-HIGH {
+            background: var(--high-color);
+            color: white;
+        }
+        
+        .severity-MEDIUM {
+            background: var(--medium-color);
+            color: #000;
+        }
+        
+        .severity-LOW {
+            background: var(--low-color);
+            color: white;
+        }
+        
+        .alert-body {
+            padding: 0 20px 20px 20px;
+            display: none;
+        }
+        
+        .alert-body.show {
+            display: block;
+        }
+        
+        .evidence-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 3px solid #0d6efd;
+        }
+        
+        .ai-summary-box {
+            background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #667eea;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn-approve {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-reject {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            border: none;
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-approve:hover, .btn-reject:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .decision-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .decision-approved {
+            background: #28a745;
+            color: white;
+        }
+        
+        .decision-rejected {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .type-badge {
+            background: #6c757d;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        
+        .timestamp {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <div class="card header-card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="mb-1"><i class="bi bi-shield-check"></i> Energy Sector SOC</h1>
+                        <p class="mb-0">AI-Assisted Security Operations Dashboard</p>
+                    </div>
+                    <div class="text-end">
+                        <div class="timestamp">2025-10-31 18:21:04</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 2rem;"></i>
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Total Alerts</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="bi bi-hourglass-split text-primary" style="font-size: 2rem;"></i>
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Pending Review</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 2rem;"></i>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class="bi bi-x-circle-fill text-danger" style="font-size: 2rem;"></i>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="card mb-4" style="background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="mb-0"><i class="bi bi-funnel-fill"></i> Filter Alerts</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="severityFilter" class="form-select" onchange="filterBySeverity()">
+                            <option value="ALL">All Severities (6)</option>
+                            <option value="CRITICAL">Critical Only (2)</option>
+                            <option value="HIGH">High Only (2)</option>
+                            <option value="MEDIUM">Medium Only (1)</option>
+                            <option value="LOW">Low Only (1)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <h3 class="text-white mb-3"><i class="bi bi-list-check"></i> Security Alerts</h3>
+        
+        
+        <div class="alert-card" id="alert-ALERT-001">
+            <div class="alert-header CRITICAL" onclick="toggleAlert('ALERT-001')">
+                <div>
+                    <span class="severity-badge severity-CRITICAL">CRITICAL</span>
+                    <span class="type-badge">IMPOSSIBLE_TRAVEL</span>
+                    <h5 class="mt-2 mb-1">User robert.johnson logged in from Moscow Russia after previous login from Austin USA within impossible timeframe</h5>
+                    <small class="timestamp">2025-10-29 11:00:00</small>
+                </div>
+                <div>
+                    
+                        <i class="bi bi-chevron-down" id="icon-ALERT-001"></i>
+                    
+                </div>
+            </div>
+            
+            <div class="alert-body" id="body-ALERT-001">
+                <!-- AI Summary -->
+                <div class="ai-summary-box">
+                    <h6><i class="bi bi-robot"></i> AI Analysis</h6>
+                    <div style="white-space: pre-wrap;">This alert indicates a potential account compromise. The user 'robert.johnson' authenticated successfully from Moscow, Russia just 15 minutes after logging in from Austin, Texas. This is physically impossible and suggests either credential theft or simultaneous use of compromised credentials.
+
+Risk Factors:
+- Geographic distance: ~8,500 km
+- Time between logins: 15 minutes
+- Previous failed login attempt from Moscow
+- User has legitimate Austin-based access history
+
+Recommendation: HIGH PRIORITY - Suspend account immediately and initiate incident response.</div>
+                </div>
+
+                <!-- Evidence -->
+                <div class="evidence-box">
+                    <h6><i class="bi bi-file-earmark-text"></i> Technical Evidence</h6>
+                    <pre>{
+  "distance_km": 8500,
+  "login_1": {
+    "ip": "192.168.100.5",
+    "location": "Moscow Russia",
+    "success": false,
+    "timestamp": "2025-10-29 11:00:00"
+  },
+  "login_2": {
+    "ip": "10.0.3.200",
+    "location": "Austin USA",
+    "success": true,
+    "timestamp": "2025-10-29 11:15:00"
+  },
+  "time_diff_minutes": 15,
+  "user": "robert.johnson"
+}</pre>
+                </div>
+
+                <!-- Action Buttons or Decision Display -->
+                
+                <div class="action-buttons">
+                    <button class="btn btn-approve" onclick="submitFeedback('ALERT-001', 'approved')">
+                        <i class="bi bi-check-circle"></i> Approve Alert
+                    </button>
+                    <button class="btn btn-reject" onclick="submitFeedback('ALERT-001', 'rejected')">
+                        <i class="bi bi-x-circle"></i> Reject Alert
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="alert-card" id="alert-ALERT-002">
+            <div class="alert-header HIGH" onclick="toggleAlert('ALERT-002')">
+                <div>
+                    <span class="severity-badge severity-HIGH">HIGH</span>
+                    <span class="type-badge">BLOCKED_THREAT</span>
+                    <h5 class="mt-2 mb-1">Multiple blocked connection attempts to critical server from external IP 203.0.113.100</h5>
+                    <small class="timestamp">2025-10-29 08:10:00</small>
+                </div>
+                <div>
+                    
+                        <i class="bi bi-chevron-down" id="icon-ALERT-002"></i>
+                    
+                </div>
+            </div>
+            
+            <div class="alert-body" id="body-ALERT-002">
+                <!-- AI Summary -->
+                <div class="ai-summary-box">
+                    <h6><i class="bi bi-robot"></i> AI Analysis</h6>
+                    <div style="white-space: pre-wrap;">External IP address 203.0.113.100 attempted to establish RDP (Remote Desktop Protocol) connections to critical infrastructure server ems-server-1. The firewall successfully blocked these attempts.
+
+Concerns:
+- Target: High-criticality SCADA monitoring system
+- Protocol: RDP (port 3389) - commonly targeted for ransomware
+- Source: External internet IP
+- Pattern suggests automated scanning or targeted attack
+
+Recommendation: MEDIUM PRIORITY - Monitor for continued attempts, verify firewall rules are optimal.</div>
+                </div>
+
+                <!-- Evidence -->
+                <div class="evidence-box">
+                    <h6><i class="bi bi-file-earmark-text"></i> Technical Evidence</h6>
+                    <pre>{
+  "action": "BLOCK",
+  "criticality": "high",
+  "dst_ip": "10.0.1.10",
+  "dst_port": 3389,
+  "protocol": "TCP",
+  "src_ip": "203.0.113.100",
+  "target_system": "ems-server-1 (SCADA Monitor)"
+}</pre>
+                </div>
+
+                <!-- Action Buttons or Decision Display -->
+                
+                <div class="action-buttons">
+                    <button class="btn btn-approve" onclick="submitFeedback('ALERT-002', 'approved')">
+                        <i class="bi bi-check-circle"></i> Approve Alert
+                    </button>
+                    <button class="btn btn-reject" onclick="submitFeedback('ALERT-002', 'rejected')">
+                        <i class="bi bi-x-circle"></i> Reject Alert
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="alert-card" id="alert-ALERT-003">
+            <div class="alert-header HIGH" onclick="toggleAlert('ALERT-003')">
+                <div>
+                    <span class="severity-badge severity-HIGH">HIGH</span>
+                    <span class="type-badge">UNPATCHED_CRITICAL</span>
+                    <h5 class="mt-2 mb-1">Critical system ops-server-2 running outdated software (last patched 2025-09-10)</h5>
+                    <small class="timestamp">2025-10-29 09:00:00</small>
+                </div>
+                <div>
+                    
+                        <i class="bi bi-chevron-down" id="icon-ALERT-003"></i>
+                    
+                </div>
+            </div>
+            
+            <div class="alert-body" id="body-ALERT-003">
+                <!-- AI Summary -->
+                <div class="ai-summary-box">
+                    <h6><i class="bi bi-robot"></i> AI Analysis</h6>
+                    <div style="white-space: pre-wrap;">High-criticality server 'ops-server-2' has not received security patches in over 50 days. This Ubuntu system runs critical infrastructure including PostgreSQL database and Apache web services.
+
+Vulnerabilities:
+- Multiple CVEs likely unpatched
+- Running Apache and PostgreSQL with known vulnerabilities
+- Exposes attack surface to both internal and external threats
+
+Recommendation: HIGH PRIORITY - Schedule maintenance window for patching within 48 hours.</div>
+                </div>
+
+                <!-- Evidence -->
+                <div class="evidence-box">
+                    <h6><i class="bi bi-file-earmark-text"></i> Technical Evidence</h6>
+                    <pre>{
+  "criticality": "high",
+  "days_since_patch": 50,
+  "hostname": "ops-server-2",
+  "installed_apps": [
+    "Apache",
+    "PostgreSQL",
+    "Python"
+  ],
+  "ip_address": "10.0.1.11",
+  "last_patch_date": "2025-09-10",
+  "os": "Ubuntu 20.04"
+}</pre>
+                </div>
+
+                <!-- Action Buttons or Decision Display -->
+                
+                <div class="action-buttons">
+                    <button class="btn btn-approve" onclick="submitFeedback('ALERT-003', 'approved')">
+                        <i class="bi bi-check-circle"></i> Approve Alert
+                    </button>
+                    <button class="btn btn-reject" onclick="submitFeedback('ALERT-003', 'rejected')">
+                        <i class="bi bi-x-circle"></i> Reject Alert
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="alert-card" id="alert-ALERT-004">
+            <div class="alert-header MEDIUM" onclick="toggleAlert('ALERT-004')">
+                <div>
+                    <span class="severity-badge severity-MEDIUM">MEDIUM</span>
+                    <span class="type-badge">ANOMALOUS_LOGIN</span>
+                    <h5 class="mt-2 mb-1">User michael.rodriguez accessed system from unusual location Sydney Australia</h5>
+                    <small class="timestamp">2025-10-29 14:00:00</small>
+                </div>
+                <div>
+                    
+                        <i class="bi bi-chevron-down" id="icon-ALERT-004"></i>
+                    
+                </div>
+            </div>
+            
+            <div class="alert-body" id="body-ALERT-004">
+                <!-- AI Summary -->
+                <div class="ai-summary-box">
+                    <h6><i class="bi bi-robot"></i> AI Analysis</h6>
+                    <div style="white-space: pre-wrap;">User 'michael.rodriguez' successfully authenticated from Sydney, Australia. While this is unusual given their typical Houston, Texas location, there are several factors to consider:
+
+Normal Indicators:
+- Successful authentication (credentials valid)
+- No failed attempts preceding this login
+- User has history of legitimate access
+
+Unusual Indicators:
+- Significant geographic distance from normal location
+- No travel notification on file
+
+Recommendation: LOW-MEDIUM PRIORITY - Contact user to verify legitimate travel. If not traveling, escalate to HIGH priority.</div>
+                </div>
+
+                <!-- Evidence -->
+                <div class="evidence-box">
+                    <h6><i class="bi bi-file-earmark-text"></i> Technical Evidence</h6>
+                    <pre>{
+  "ip": "203.0.113.50",
+  "location": "Sydney Australia",
+  "success": true,
+  "timestamp": "2025-10-29 14:00:00",
+  "typical_locations": [
+    "Houston USA"
+  ],
+  "user": "michael.rodriguez"
+}</pre>
+                </div>
+
+                <!-- Action Buttons or Decision Display -->
+                
+                <div class="action-buttons">
+                    <button class="btn btn-approve" onclick="submitFeedback('ALERT-004', 'approved')">
+                        <i class="bi bi-check-circle"></i> Approve Alert
+                    </button>
+                    <button class="btn btn-reject" onclick="submitFeedback('ALERT-004', 'rejected')">
+                        <i class="bi bi-x-circle"></i> Reject Alert
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="alert-card" id="alert-ALERT-005">
+            <div class="alert-header CRITICAL" onclick="toggleAlert('ALERT-005')">
+                <div>
+                    <span class="severity-badge severity-CRITICAL">CRITICAL</span>
+                    <span class="type-badge">LEGACY_SYSTEM_ALERT</span>
+                    <h5 class="mt-2 mb-1">Critical legacy system legacy-hmi-1 running Windows XP detected with active network connections</h5>
+                    <small class="timestamp">2025-10-29 09:30:00</small>
+                </div>
+                <div>
+                    
+                        <i class="bi bi-chevron-down" id="icon-ALERT-005"></i>
+                    
+                </div>
+            </div>
+            
+            <div class="alert-body" id="body-ALERT-005">
+                <!-- AI Summary -->
+                <div class="ai-summary-box">
+                    <h6><i class="bi bi-robot"></i> AI Analysis</h6>
+                    <div style="white-space: pre-wrap;">CRITICAL: A legacy Windows XP system (legacy-hmi-1) is actively running and connected to the network. This system:
+
+- Runs unsupported Windows XP (end-of-life since 2014)
+- Contains legacy SCADA client software
+- Has not received security patches since 2024-05-15
+- Marked as CRITICAL infrastructure component
+- Vulnerable to all Windows XP exploits (1000+ known CVEs)
+
+Immediate Risks:
+- Easy target for ransomware (e.g., WannaCry, NotPetya)
+- Potential pivot point for network intrusion
+- Cannot be patched against modern threats
+- Likely fails compliance requirements
+
+Recommendation: CRITICAL PRIORITY - Immediately isolate from network or implement strict network segmentation.</div>
+                </div>
+
+                <!-- Evidence -->
+                <div class="evidence-box">
+                    <h6><i class="bi bi-file-earmark-text"></i> Technical Evidence</h6>
+                    <pre>{
+  "criticality": "critical",
+  "days_since_patch": 565,
+  "hostname": "legacy-hmi-1",
+  "installed_apps": [
+    "Legacy SCADA Client"
+  ],
+  "ip_address": "192.168.100.10",
+  "last_patch_date": "2024-05-15",
+  "network_activity": true,
+  "os": "Windows XP"
+}</pre>
+                </div>
+
+                <!-- Action Buttons or Decision Display -->
+                
+                <div class="action-buttons">
+                    <button class="btn btn-approve" onclick="submitFeedback('ALERT-005', 'approved')">
+                        <i class="bi bi-check-circle"></i> Approve Alert
+                    </button>
+                    <button class="btn btn-reject" onclick="submitFeedback('ALERT-005', 'rejected')">
+                        <i class="bi bi-x-circle"></i> Reject Alert
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="alert-card" id="alert-ALERT-006">
+            <div class="alert-header LOW" onclick="toggleAlert('ALERT-006')">
+                <div>
+                    <span class="severity-badge severity-LOW">LOW</span>
+                    <span class="type-badge">ALLOWED_TRAFFIC</span>
+                    <h5 class="mt-2 mb-1">Database connection from trusted internal host to ops-server-2</h5>
+                    <small class="timestamp">2025-10-29 09:15:00</small>
+                </div>
+                <div>
+                    
+                        <i class="bi bi-chevron-down" id="icon-ALERT-006"></i>
+                    
+                </div>
+            </div>
+            
+            <div class="alert-body" id="body-ALERT-006">
+                <!-- AI Summary -->
+                <div class="ai-summary-box">
+                    <h6><i class="bi bi-robot"></i> AI Analysis</h6>
+                    <div style="white-space: pre-wrap;">Normal database traffic detected between internal systems. Server 10.0.1.10 connected to PostgreSQL database on ops-server-2 (10.0.1.11) via standard port 3306.
+
+Normal Indicators:
+- Source and destination are both internal trusted hosts
+- Using standard database port
+- Traffic was allowed by firewall policy
+- Consistent with expected application architecture
+
+Recommendation: LOW PRIORITY - Normal operations, no action required. Log retained for audit purposes.</div>
+                </div>
+
+                <!-- Evidence -->
+                <div class="evidence-box">
+                    <h6><i class="bi bi-file-earmark-text"></i> Technical Evidence</h6>
+                    <pre>{
+  "action": "ALLOW",
+  "bytes": 2048,
+  "dst_ip": "10.0.2.20",
+  "dst_port": 3306,
+  "protocol": "TCP",
+  "src_ip": "10.0.1.10",
+  "timestamp": "2025-10-29 09:15:00"
+}</pre>
+                </div>
+
+                <!-- Action Buttons or Decision Display -->
+                
+                <div class="action-buttons">
+                    <button class="btn btn-approve" onclick="submitFeedback('ALERT-006', 'approved')">
+                        <i class="bi bi-check-circle"></i> Approve Alert
+                    </button>
+                    <button class="btn btn-reject" onclick="submitFeedback('ALERT-006', 'rejected')">
+                        <i class="bi bi-x-circle"></i> Reject Alert
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleAlert(alertId) {
+            const body = document.getElementById('body-' + alertId);
+            const icon = document.getElementById('icon-' + alertId);
+            
+            if (body.classList.contains('show')) {
+                body.classList.remove('show');
+                if (icon) icon.classList.replace('bi-chevron-up', 'bi-chevron-down');
+            } else {
+                body.classList.add('show');
+                if (icon) icon.classList.replace('bi-chevron-down', 'bi-chevron-up');
+            }
+        }
+
+        function submitFeedback(alertId, decision) {
+            const notes = prompt(`Add notes for this ${decision} decision (optional):`);
+            
+            fetch('/api/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    alert_id: alertId,
+                    decision: decision,
+                    notes: notes || ''
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Alert ${decision} successfully!`);
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to submit feedback. Please try again.');
+            });
+        }
+
+        function filterBySeverity() {
+            const filter = document.getElementById('severityFilter').value;
+            const alerts = document.querySelectorAll('.alert-card');
+            
+            alerts.forEach(alert => {
+                const header = alert.querySelector('.alert-header');
+                const severity = header.classList.contains('CRITICAL') ? 'CRITICAL' :
+                                header.classList.contains('HIGH') ? 'HIGH' :
+                                header.classList.contains('MEDIUM') ? 'MEDIUM' : 'LOW';
+                
+                if (filter === 'ALL' || severity === filter) {
+                    alert.style.display = 'block';
+                } else {
+                    alert.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

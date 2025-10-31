@@ -264,26 +264,21 @@
             </div>
         </div>
 
-        <!-- Severity Breakdown -->
+        <!-- Filter Controls -->
         <div class="card mb-4" style="background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
             <div class="card-body">
-                <h5 class="mb-3"><i class="bi bi-bar-chart-fill"></i> Severity Breakdown</h5>
-                <div class="row">
-                    <div class="col-md-3 text-center">
-                        <div class="severity-badge severity-CRITICAL">CRITICAL</div>
-                        <div class="stat-number" style="font-size: 1.5rem; color: var(--critical-color);">{{ stats.severity.CRITICAL }}</div>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="mb-0"><i class="bi bi-funnel-fill"></i> Filter Alerts</h5>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <div class="severity-badge severity-HIGH">HIGH</div>
-                        <div class="stat-number" style="font-size: 1.5rem; color: var(--high-color);">{{ stats.severity.HIGH }}</div>
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <div class="severity-badge severity-MEDIUM">MEDIUM</div>
-                        <div class="stat-number" style="font-size: 1.5rem; color: var(--medium-color);">{{ stats.severity.MEDIUM }}</div>
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <div class="severity-badge severity-LOW">LOW</div>
-                        <div class="stat-number" style="font-size: 1.5rem; color: var(--low-color);">{{ stats.severity.LOW }}</div>
+                    <div class="col-md-6">
+                        <select id="severityFilter" class="form-select" onchange="filterBySeverity()">
+                            <option value="ALL">All Severities ({{ stats.total }})</option>
+                            <option value="CRITICAL">Critical Only ({{ stats.severity.CRITICAL }})</option>
+                            <option value="HIGH">High Only ({{ stats.severity.HIGH }})</option>
+                            <option value="MEDIUM">Medium Only ({{ stats.severity.MEDIUM }})</option>
+                            <option value="LOW">Low Only ({{ stats.severity.LOW }})</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -327,16 +322,6 @@
                 <div class="evidence-box">
                     <h6><i class="bi bi-file-earmark-text"></i> Technical Evidence</h6>
                     <pre>{{ item.evidence | tojson(indent=2) }}</pre>
-                </div>
-
-                <!-- Suggested Actions -->
-                <div class="mt-3">
-                    <h6><i class="bi bi-clipboard-check"></i> Suggested Actions</h6>
-                    <ul>
-                        {% for action in item.suggested_actions %}
-                        <li>{{ action }}</li>
-                        {% endfor %}
-                    </ul>
                 </div>
 
                 <!-- Action Buttons or Decision Display -->
@@ -416,6 +401,24 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('Failed to submit feedback. Please try again.');
+            });
+        }
+
+        function filterBySeverity() {
+            const filter = document.getElementById('severityFilter').value;
+            const alerts = document.querySelectorAll('.alert-card');
+            
+            alerts.forEach(alert => {
+                const header = alert.querySelector('.alert-header');
+                const severity = header.classList.contains('CRITICAL') ? 'CRITICAL' :
+                                header.classList.contains('HIGH') ? 'HIGH' :
+                                header.classList.contains('MEDIUM') ? 'MEDIUM' : 'LOW';
+                
+                if (filter === 'ALL' || severity === filter) {
+                    alert.style.display = 'block';
+                } else {
+                    alert.style.display = 'none';
+                }
             });
         }
     </script>
