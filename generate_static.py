@@ -210,7 +210,8 @@ def generate_static_site():
     html_content = template.render(
         triage=SAMPLE_TRIAGE,
         stats=stats,
-        current_time=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        current_time=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        static_mode=True
     )
     
     # Create docs directory if it doesn't exist
@@ -220,7 +221,7 @@ def generate_static_site():
     with open(OUTPUT_FILE, 'w') as f:
         f.write(html_content)
     
-    print(f"✓ Static site generated: {OUTPUT_FILE}")
+    print(f"? Static site generated: {OUTPUT_FILE}")
     print(f"  - Total alerts: {stats['total']}")
     print(f"  - Critical: {stats['severity']['CRITICAL']}")
     print(f"  - High: {stats['severity']['HIGH']}")

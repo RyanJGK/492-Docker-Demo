@@ -223,14 +223,23 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1 class="mb-1"><i class="bi bi-shield-check"></i> Energy Sector SOC</h1>
-                        <p class="mb-0">AI-Assisted Security Operations Dashboard</p>
+                        <p class="mb-0">AI-Assisted Security Operations Dashboard <span class="badge bg-info ms-2">Static Demo</span></p>
                     </div>
                     <div class="text-end">
-                        <div class="timestamp">2025-10-31 18:21:04</div>
+                        <div class="timestamp">2025-10-31 19:19:30</div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        
+        <!-- Static Demo Notice -->
+        <div class="alert alert-info mb-4" style="border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <i class="bi bi-info-circle-fill"></i> <strong>Static Demo Mode:</strong> 
+            This is a read-only demonstration. For full functionality including feedback submission, 
+            run the Docker version: <code>docker-compose up --build</code>
+        </div>
+        
 
         <!-- Statistics -->
         <div class="row mb-4">
@@ -680,30 +689,10 @@ Recommendation: LOW PRIORITY - Normal operations, no action required. Log retain
         }
 
         function submitFeedback(alertId, decision) {
-            const notes = prompt(`Add notes for this ${decision} decision (optional):`);
             
-            fetch('/api/feedback', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    alert_id: alertId,
-                    decision: decision,
-                    notes: notes || ''
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(`Alert ${decision} successfully!`);
-                    location.reload();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to submit feedback. Please try again.');
-            });
+            // Static GitHub Pages demo - feedback submission disabled
+            alert(`This is a static demo version.\n\nAlert ${decision} action would be recorded in a live deployment.\n\nTo enable feedback submission, run the full Docker version:\ndocker-compose up --build`);
+            
         }
 
         function filterBySeverity() {
