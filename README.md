@@ -49,13 +49,25 @@ The demo consists of four main components:
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: GitHub Pages (Static Demo)
+
+For a quick online demo without any installation:
+
+1. **Deploy to GitHub Pages** - See [GITHUB_PAGES_DEPLOYMENT.md](GITHUB_PAGES_DEPLOYMENT.md) for detailed instructions
+2. **View Live Demo** - Access at `https://YOUR_USERNAME.github.io/YOUR_REPO/`
+3. **No Backend Required** - Static HTML with sample data, perfect for portfolios and demonstrations
+
+Note: The GitHub Pages version is read-only and doesn't support analyst feedback submission. For full functionality, use the Docker deployment below.
+
+### Option 2: Docker (Full Functionality)
+
+#### Prerequisites
 
 - Docker (20.10+)
 - Docker Compose (2.0+)
 - 2GB free disk space
 
-### Running the Demo
+#### Running the Demo
 
 1. **Clone or navigate to the project directory:**
    ```bash
@@ -95,10 +107,10 @@ docker-compose up --build
 The demo includes realistic synthetic data for an energy company:
 
 ### Users
-- `alice` - Legitimate user with suspicious travel patterns
-- `bob` - User with international travel
-- `charlie` - Regular domestic user
-- `janitor` - Compromised account example
+- `sarah.chen` - Legitimate user with suspicious travel patterns
+- `michael.rodriguez` - User with international travel
+- `david.thompson` - Regular domestic user
+- `robert.johnson` - Compromised account example
 
 ### Hosts
 - `ems-server-1` - Energy Management System (Windows)
@@ -242,8 +254,9 @@ This demo is designed for:
 Potential additions for extended demos:
 
 1. **Real LLM Integration**: Replace mock with OpenAI GPT-4 or local Llama models
-2. **Time-Series Analysis**: Add trending and anomaly detection over time
-3. **MITRE ATT&CK Mapping**: Link alerts to ATT&CK framework tactics
+2. **GitHub Pages Live Demo**: ✅ Implemented - Static version available for easy sharing
+3. **Time-Series Analysis**: Add trending and anomaly detection over time
+4. **MITRE ATT&CK Mapping**: Link alerts to ATT&CK framework tactics
 4. **Automated Response**: Implement scripted remediation actions
 5. **Multi-User Support**: Add authentication and role-based access
 6. **Export Functionality**: Generate PDF reports and CSV exports
