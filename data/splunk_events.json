@@ -1,0 +1,92 @@
+[
+  {
+    "event_id": "evt_001",
+    "timestamp": "2024-10-31T09:45:00Z",
+    "source": "ad-controller-01.corp",
+    "event_type": "failed_login",
+    "user": "admin",
+    "source_ip": "198.51.100.77",
+    "count": 15,
+    "time_window_minutes": 5,
+    "details": "Brute force attack detected - 15 failed login attempts in 5 minutes",
+    "severity": "high"
+  },
+  {
+    "event_id": "evt_002",
+    "timestamp": "2024-10-31T11:22:30Z",
+    "source": "scada-gateway-01.prod",
+    "event_type": "privilege_escalation",
+    "user": "service_account",
+    "process": "net user scada_admin /add",
+    "parent_process": "powershell.exe",
+    "details": "Suspicious privilege escalation - new admin account created on SCADA gateway",
+    "severity": "critical"
+  },
+  {
+    "event_id": "evt_003",
+    "timestamp": "2024-10-31T14:15:45Z",
+    "source": "hmi-workstation-01.prod",
+    "event_type": "unusual_process",
+    "user": "operator",
+    "process": "mimikatz.exe",
+    "command_line": "mimikatz.exe sekurlsa::logonpasswords",
+    "details": "Credential dumping tool detected on HMI workstation",
+    "severity": "critical"
+  },
+  {
+    "event_id": "evt_004",
+    "timestamp": "2024-10-31T15:30:22Z",
+    "source": "ems-historian-01.prod",
+    "event_type": "data_exfiltration",
+    "user": "unknown",
+    "destination_ip": "203.0.113.200",
+    "data_volume_mb": 2500,
+    "protocol": "FTP",
+    "details": "Large volume data transfer to external IP via FTP",
+    "severity": "high"
+  },
+  {
+    "event_id": "evt_005",
+    "timestamp": "2024-10-31T16:45:18Z",
+    "source": "plc-controller-01.prod",
+    "event_type": "config_change",
+    "user": "system",
+    "change_type": "ladder_logic_modified",
+    "details": "PLC ladder logic modified outside maintenance window",
+    "severity": "critical"
+  },
+  {
+    "event_id": "evt_006",
+    "timestamp": "2024-10-31T08:30:12Z",
+    "source": "vpn-concentrator-01.dmz",
+    "event_type": "failed_login",
+    "user": "vpnuser",
+    "source_ip": "185.220.101.88",
+    "count": 8,
+    "time_window_minutes": 10,
+    "details": "Multiple failed VPN authentication attempts",
+    "severity": "medium"
+  },
+  {
+    "event_id": "evt_007",
+    "timestamp": "2024-10-31T13:20:55Z",
+    "source": "file-server-01.corp",
+    "event_type": "ransomware_indicator",
+    "user": "contractor_temp",
+    "file_pattern": "*.encrypted",
+    "files_affected": 1247,
+    "details": "Mass file encryption detected - potential ransomware",
+    "severity": "critical"
+  },
+  {
+    "event_id": "evt_008",
+    "timestamp": "2024-10-31T17:10:33Z",
+    "source": "backup-server-01.ops",
+    "event_type": "backup_deletion",
+    "user": "Administrator",
+    "backups_deleted": 30,
+    "retention_days_deleted": 90,
+    "details": "Critical backup files deleted - potential attack preparation",
+    "severity": "critical"
+  }
+]

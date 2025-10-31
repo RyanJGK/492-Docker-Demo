@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  rules:
+    build: ./rules
+    container_name: soc-rules-prod
+    restart: unless-stopped
+    volumes:
+      - ./data:/data:ro
+      - shared_data:/shared
+    environment:
+      - DATA_DIR=/data
+      - OUTPUT_DIR=/shared
+    networks:
+      - soc-network
+
+  agent:
+    build: ./agent
+    container_name: soc-agent-prod
+    restart: unless-stopped
+    volumes:
+      - shared_data:/shared
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - ALERTS_FILE=/shared/alerts.json
+      - TRIAGE_FILE=/shared/triage.json
+      - FEEDBACK_FILE=/shared/feedback.json
+    depends_on:
+      - rules
+    networks:
+      - soc-network
+
+  web:
+    build: ./web
+    container_name: soc-web-prod
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+    volumes:
+      - shared_data:/shared
+      - ./scripts:/scripts:ro
+    environment:
+      - TRIAGE_FILE=/shared/triage.json
+      - FEEDBACK_FILE=/shared/feedback.json
+      - ALERTS_FILE=/shared/alerts.json
+      - PORT=8080
+    depends_on:
+      - agent
+    networks:
+      - soc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+networks:
+  soc-network:
+    driver: bridge
+
+volumes:
+  shared_data:
+    driver: local
