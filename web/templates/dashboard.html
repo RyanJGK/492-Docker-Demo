@@ -223,7 +223,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1 class="mb-1"><i class="bi bi-shield-check"></i> Energy Sector SOC</h1>
-                        <p class="mb-0">AI-Assisted Security Operations Dashboard</p>
+                        <p class="mb-0">AI-Assisted Security Operations Dashboard{% if static_mode %} <span class="badge bg-info ms-2">Static Demo</span>{% endif %}</p>
                     </div>
                     <div class="text-end">
                         <div class="timestamp">{{ current_time }}</div>
@@ -231,6 +231,15 @@
                 </div>
             </div>
         </div>
+        
+        {% if static_mode %}
+        <!-- Static Demo Notice -->
+        <div class="alert alert-info mb-4" style="border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <i class="bi bi-info-circle-fill"></i> <strong>Static Demo Mode:</strong> 
+            This is a read-only demonstration. For full functionality including feedback submission, 
+            run the Docker version: <code>docker-compose up --build</code>
+        </div>
+        {% endif %}
 
         <!-- Statistics -->
         <div class="row mb-4">
@@ -378,6 +387,10 @@
         }
 
         function submitFeedback(alertId, decision) {
+            {% if static_mode %}
+            // Static GitHub Pages demo - feedback submission disabled
+            alert(`This is a static demo version.\n\nAlert ${decision} action would be recorded in a live deployment.\n\nTo enable feedback submission, run the full Docker version:\ndocker-compose up --build`);
+            {% else %}
             const notes = prompt(`Add notes for this ${decision} decision (optional):`);
             
             fetch('/api/feedback', {
@@ -402,6 +415,7 @@
                 console.error('Error:', error);
                 alert('Failed to submit feedback. Please try again.');
             });
+            {% endif %}
         }
 
         function filterBySeverity() {
