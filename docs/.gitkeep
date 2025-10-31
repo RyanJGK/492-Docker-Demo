@@ -1,0 +1,2 @@
+# This file ensures the docs directory is tracked by git
+# The static site will be generated into this directory

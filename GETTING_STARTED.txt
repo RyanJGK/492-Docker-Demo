@@ -1,0 +1,142 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║          ENERGY SECTOR AI SECURITY DEMO - GETTING STARTED                    ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🚀 THREE WAYS TO START
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  METHOD 1: Use the helper script (recommended)
+  ──────────────────────────────────────────────
+    $ ./start-demo.sh
+
+  METHOD 2: Direct Docker Compose
+  ────────────────────────────────
+    $ docker-compose up --build
+
+  METHOD 3: Validate first, then start
+  ─────────────────────────────────────
+    $ ./validate-setup.sh
+    $ docker-compose up --build
+
+
+📖 THEN READ THE DOCS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. QUICKSTART.md        - Get running in 5 minutes
+  2. README.md            - Complete documentation
+  3. PROJECT_SUMMARY.md   - Technical specifications
+  4. INDEX.md             - File navigation guide
+
+
+🌐 ACCESS THE DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Open your browser to:
+    http://localhost:8080
+
+
+⏱️  FIRST RUN TIMELINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ⏳ Docker image build   : 30-60 seconds
+  ⏳ Rules engine          : 10-30 seconds
+  ⏳ AI agent              : 20-40 seconds
+  ⏳ Web dashboard startup : 5-10 seconds
+  ────────────────────────────────────────
+  ⏱️  TOTAL (first run)    : 1-2 minutes
+
+  Subsequent runs are much faster (30-60 seconds)
+
+
+✅ WHAT YOU'LL SEE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Dashboard will display:
+    • 10-15 security alerts
+    • AI-generated analysis for each alert
+    • Statistics (Critical/High/Medium/Low)
+    • Approve/Reject buttons for each alert
+    • Technical evidence in JSON format
+    • Suggested remediation actions
+
+
+🎯 DEMO SCENARIOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  SCENARIO 1: Compromised Account
+    Look for: "janitor" user impossible travel
+    Severity: HIGH
+    Action:   Review AI analysis and approve for investigation
+
+  SCENARIO 2: Legacy System Risk
+    Look for: "legacy-hmi-1" patch drift
+    Severity: CRITICAL (Windows XP, 500+ days)
+    Action:   Review upgrade recommendations
+
+  SCENARIO 3: Insecure Protocols
+    Look for: Telnet (port 23) or FTP (port 21)
+    Severity: HIGH
+    Action:   Review NERC CIP compliance notes
+
+
+🛑 STOPPING THE DEMO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Press Ctrl+C in the terminal, then:
+    $ docker-compose down
+
+
+🔄 RESETTING THE DEMO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  To clear all generated data and start fresh:
+    $ rm -f shared/*.json
+    $ docker-compose up --build
+
+
+❓ TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Problem: Port 8080 already in use
+  Solution: Edit docker-compose.yml, change "8080:8080" to "8081:8080"
+
+  Problem: Services won't start
+  Solution: Run ./validate-setup.sh to diagnose issues
+
+  Problem: No alerts shown in dashboard
+  Solution: Check if shared/triage.json exists
+            View logs: docker-compose logs web
+
+  Problem: Permission errors
+  Solution: chmod -R 777 shared/
+
+
+📞 NEED HELP?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Read QUICKSTART.md
+  2. Read README.md troubleshooting section
+  3. Check docker-compose logs
+  4. Run validate-setup.sh
+
+
+🎉 READY TO START!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Run this command now:
+
+    ./start-demo.sh
+
+  Or:
+
+    docker-compose up --build
+
+  Then open http://localhost:8080 in your browser!
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                        Happy Threat Hunting! 🔍🛡️                            ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝

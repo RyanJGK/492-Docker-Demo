@@ -1,0 +1,9 @@
+hostname,ip_address,os,last_patch_date,installed_apps,criticality
+ems-server-1,10.0.1.10,Windows Server 2019,2025-10-15,"IIS,SCADA Monitor,Antivirus",high
+ops-server-2,10.0.1.11,Ubuntu 20.04,2025-09-10,"Apache,PostgreSQL,Python",high
+backup-server-3,10.0.2.20,CentOS 7,2025-10-20,"rsync,MySQL,Nagios",medium
+workstation-sarah,10.0.3.50,Windows 11,2025-10-28,"Office,Chrome,Teams",low
+workstation-michael,10.0.3.51,Windows 11,2025-10-25,"Office,Firefox,Slack",low
+legacy-hmi-1,192.168.100.10,Windows XP,2024-05-15,"Legacy SCADA Client",critical
+fileserver-1,10.0.2.30,Windows Server 2016,2025-10-01,"SMB,DFS",medium
+dev-server,172.16.5.100,Ubuntu 22.04,2025-10-27,"Docker,Git,NodeJS",low
