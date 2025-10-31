@@ -1,0 +1,28 @@
+[
+  {
+    "scan_id": "scan-2025-10-30-001",
+    "host": "scada-gateway-01.prod",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2024-1234",
+        "severity": "high",
+        "cvss_score": 8.1,
+        "exploitable": true,
+        "description": "Remote code execution vulnerability in legacy OPC-UA component"
+      }
+    ]
+  },
+  {
+    "scan_id": "scan-2025-10-30-002",
+    "host": "vpn-concentrator-01.dmz",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2023-4456",
+        "severity": "critical",
+        "cvss_score": 9.4,
+        "exploitable": true,
+        "description": "Authentication bypass enabling unauthorized VPN access"
+      }
+    ]
+  }
+]

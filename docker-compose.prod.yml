@@ -1,0 +1,41 @@
+version: '3.8'
+
+volumes:
+  shared_data:
+
+services:
+  rules:
+    build: ./rules
+    restart: unless-stopped
+    volumes:
+      - ./data:/data:ro
+      - shared_data:/shared
+    environment:
+      - DATA_DIR=/data
+      - OUTPUT_DIR=/shared
+
+  agent:
+    build: ./agent
+    restart: unless-stopped
+    depends_on:
+      - rules
+    volumes:
+      - shared_data:/shared
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - ALERTS_FILE=/shared/alerts.json
+      - TRIAGE_FILE=/shared/triage.json
+      - FEEDBACK_FILE=/shared/feedback.json
+
+  web:
+    build: ./web
+    restart: unless-stopped
+    depends_on:
+      - agent
+    ports:
+      - "80:8080"
+    volumes:
+      - shared_data:/shared:ro
+    environment:
+      - TRIAGE_FILE=/shared/triage.json
+      - FEEDBACK_FILE=/shared/feedback.json

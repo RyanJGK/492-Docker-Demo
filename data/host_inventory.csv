@@ -1,0 +1,9 @@
+hostname,ip,os,last_patch_date,critical_apps,location
+scada-gateway-01.prod,10.10.5.10,CentOS 7,2025-08-20,SCADA Gateway Service;OPC-UA Bridge,Houston Control Center
+ems-historian-01.prod,10.10.6.15,Red Hat Enterprise Linux 8,2025-09-05,Energy Historian Database,Denver Data Hall
+firewall-dmz-01.prod,172.16.0.1,FortiOS 7.0,2025-06-30,Perimeter Firewall;VPN Tunnel,DMZ Rack 4
+ad-controller-01.corp,10.20.1.5,Windows Server 2022,2025-10-01,Active Directory Domain Services,HQ Data Center
+splunk-indexer-01.sec,10.30.2.20,Ubuntu 22.04,2025-07-15,Splunk Enterprise Indexer,Security Operations Center
+backup-server-01.ops,10.40.3.25,Windows Server 2019,2025-09-25,Commvault Backup Suite,Operations Bunker
+vpn-concentrator-01.dmz,172.16.0.25,PanOS 11,2025-05-28,GlobalProtect VPN;SSL Inspection,DMZ Rack 2
+hmi-workstation-01.prod,10.10.9.50,Windows 10 IoT,2025-08-02,HMI Interface;Trend Charts,Plant Floor Bay 1

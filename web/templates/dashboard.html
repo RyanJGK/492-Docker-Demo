@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Energy SOC Demo Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        background-color: #f5f7fb;
+      }
+      .card-evidence pre {
+        background-color: #0d1117;
+        color: #f5f7fb;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+      }
+      .severity-badge {
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+      .alert-card {
+        transition: transform 0.2s ease-in-out;
+      }
+      .alert-card:hover {
+        transform: translateY(-2px);
+      }
+      .feedback-panel {
+        max-height: 540px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+      <div class="container-fluid">
+        <span class="navbar-brand">Energy SOC Demo</span>
+        <span class="text-light">Human-in-the-loop AI Triage</span>
+      </div>
+    </nav>
+    <main class="container py-4">
+      <section class="row g-4 mb-3">
+        <div class="col-6 col-md-3">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h6 class="text-muted text-uppercase">Total Alerts</h6>
+              <div class="display-6">{{ stats.alerts_total }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h6 class="text-muted text-uppercase">Feedback Entries</h6>
+              <div class="display-6">{{ stats.feedback_total }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h6 class="text-muted text-uppercase">Approved</h6>
+              <div class="display-6 text-success">{{ stats.feedback_totals.approved }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h6 class="text-muted text-uppercase">Rejected</h6>
+              <div class="display-6 text-danger">{{ stats.feedback_totals.rejected }}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="row g-4">
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0 mb-3">
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label" for="severityFilter">Severity</label>
+                  <select class="form-select" id="severityFilter">
+                    <option value="all" selected>All Severities</option>
+                    <option value="critical">Critical</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="typeFilter">Type</label>
+                  <select class="form-select" id="typeFilter">
+                    <option value="all" selected>All Types</option>
+                    {% for alert_type, count in stats.type_counts.items() %}
+                    <option value="{{ alert_type }}">{{ alert_type }} ({{ count }})</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="searchInput">Search</label>
+                  <input
+                    type="search"
+                    class="form-control"
+                    id="searchInput"
+                    placeholder="Filter by user, host, or keyword"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if not triage %}
+          <div class="alert alert-info shadow-sm">No triaged alerts available.</div>
+          {% endif %}
+
+          <div class="d-flex flex-column gap-3" id="alertList">
+            {% for record in triage %}
+            {% set alert = record.original_alert %}
+            {% set severity = alert.severity|default('unknown')|lower %}
+            {% set type = alert.type|default('unknown') %}
+            {% set badge_class = {
+              'critical': 'bg-danger',
+              'high': 'bg-warning text-dark',
+              'medium': 'bg-info text-dark',
+              'low': 'bg-secondary'
+            }[severity] if severity in ['critical','high','medium','low'] else 'bg-dark' %}
+            <div
+              class="card alert-card shadow-sm"
+              data-severity="{{ severity }}"
+              data-type="{{ type }}"
+              data-search="{{ alert.description }} {{ alert.evidence }} {{ record.ai_analysis.summary }} {{ alert.user if alert.user is defined }}"
+              id="alert-{{ record.alert_id }}"
+            >
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <h5 class="card-title mb-1">{{ alert.description }}</h5>
+                    <span class="badge severity-badge {{ badge_class }}">{{ severity }}</span>
+                    <span class="badge bg-outline-secondary text-dark ms-1">{{ type }}</span>
+                  </div>
+                  <small class="text-muted">{{ alert.timestamp }}</small>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-md-8">
+                    <p class="mb-1"><strong>AI Summary:</strong> {{ record.ai_analysis.summary }}</p>
+                    <p class="mb-1"><strong>Risk Score:</strong> {{ record.ai_analysis.risk_score }} / 10</p>
+                    <p class="mb-2">
+                      <strong>Confidence:</strong>
+                      {{ record.ai_analysis.confidence }}
+                      {% if record.ai_analysis.feedback_adjusted %}
+                      <span class="badge bg-success ms-2">Feedback Adjusted</span>
+                      {% endif %}
+                    </p>
+                    {% if record.ai_analysis.remediation_steps %}
+                    <div class="mb-2">
+                      <strong>Recommended Actions:</strong>
+                      <ul class="mb-0">
+                        {% for step in record.ai_analysis.remediation_steps %}
+                        <li>{{ step }}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="col-md-4">
+                    <div class="card card-evidence border-0 bg-light">
+                      <div class="card-body">
+                        <h6 class="card-subtitle text-muted mb-2">Evidence</h6>
+                        <pre class="small mb-0">{{ alert.evidence | tojson(indent=2) }}</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <hr />
+                <div class="row gy-2 align-items-end">
+                  <div class="col-md-8">
+                    <label class="form-label" for="reason-{{ record.alert_id }}">Analyst Notes</label>
+                    <textarea
+                      class="form-control"
+                      id="reason-{{ record.alert_id }}"
+                      rows="2"
+                      placeholder="Document operational impact or validation steps"
+                    ></textarea>
+                  </div>
+                  <div class="col-md-4 d-grid gap-2">
+                    <button
+                      class="btn btn-success"
+                      data-action="approved"
+                      data-alert-id="{{ record.alert_id }}"
+                    >
+                      Approve Alert
+                    </button>
+                    <button
+                      class="btn btn-outline-danger"
+                      data-action="rejected"
+                      data-alert-id="{{ record.alert_id }}"
+                    >
+                      Reject Alert
+                    </button>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <button
+                    class="btn btn-sm btn-link text-decoration-none"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#details-{{ record.alert_id }}"
+                    aria-expanded="false"
+                  >
+                    View Raw AI Context
+                  </button>
+                  <div class="collapse" id="details-{{ record.alert_id }}">
+                    <pre class="small bg-body border rounded p-3 mt-2">{{ record.ai_analysis.llm_context }}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Feedback History</h5>
+            </div>
+            <div class="card-body feedback-panel">
+              {% if not feedback %}
+              <p class="text-muted">No analyst feedback submitted yet.</p>
+              {% else %}
+              <ul class="list-group list-group-flush">
+                {% for entry in feedback|sort(attribute='timestamp', reverse=True) %}
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between">
+                    <strong>{{ entry.action|capitalize }}</strong>
+                    <small class="text-muted">{{ entry.timestamp }}</small>
+                  </div>
+                  <div class="small text-muted">Alert ID: {{ entry.alert_id }}</div>
+                  {% if entry.type %}
+                  <div class="small">Type: {{ entry.type }}</div>
+                  {% endif %}
+                  <p class="mb-0 small">{{ entry.reason }}</p>
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080">
+      <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const severityFilter = document.getElementById('severityFilter');
+      const typeFilter = document.getElementById('typeFilter');
+      const searchInput = document.getElementById('searchInput');
+      const alertCards = Array.from(document.querySelectorAll('#alertList .alert-card'));
+
+      function applyFilters() {
+        const severityValue = severityFilter.value;
+        const typeValue = typeFilter.value;
+        const searchValue = searchInput.value.trim().toLowerCase();
+
+        alertCards.forEach((card) => {
+          const cardSeverity = card.dataset.severity;
+          const cardType = card.dataset.type;
+          const searchContent = card.dataset.search.toLowerCase();
+
+          const matchesSeverity = severityValue === 'all' || cardSeverity === severityValue;
+          const matchesType = typeValue === 'all' || cardType === typeValue;
+          const matchesSearch = !searchValue || searchContent.includes(searchValue);
+
+          card.style.display = matchesSeverity && matchesType && matchesSearch ? 'block' : 'none';
+        });
+      }
+
+      severityFilter.addEventListener('change', applyFilters);
+      typeFilter.addEventListener('change', applyFilters);
+      searchInput.addEventListener('input', applyFilters);
+
+      function showToast(message, variant = 'success') {
+        const toastContainer = document.getElementById('toastContainer');
+        const toastEl = document.createElement('div');
+        toastEl.className = `toast align-items-center text-bg-${variant} border-0`;
+        toastEl.innerHTML = `
+          <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+          </div>
+        `;
+        toastContainer.appendChild(toastEl);
+        const toast = new bootstrap.Toast(toastEl, { delay: 3500 });
+        toast.show();
+        toastEl.addEventListener('hidden.bs.toast', () => toastEl.remove());
+      }
+
+      document.querySelectorAll('[data-action]').forEach((button) => {
+        button.addEventListener('click', async (event) => {
+          const action = event.currentTarget.dataset.action;
+          const alertId = event.currentTarget.dataset.alertId;
+          const reasonField = document.getElementById(`reason-${alertId}`);
+          const reason = reasonField.value.trim();
+
+          if (!reason) {
+            showToast('Reason is required for analyst feedback.', 'danger');
+            reasonField.focus();
+            return;
+          }
+
+          try {
+            const response = await fetch('/feedback', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ alert_id: alertId, action, reason }),
+            });
+
+            if (!response.ok) {
+              const errorBody = await response.json().catch(() => ({}));
+              throw new Error(errorBody?.message || response.statusText);
+            }
+
+            showToast(`Feedback ${action} submitted.`, 'success');
+            reasonField.value = '';
+          } catch (error) {
+            console.error('Feedback submission failed', error);
+            showToast('Failed to submit feedback. Please retry.', 'danger');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

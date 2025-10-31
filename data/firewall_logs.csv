@@ -1,0 +1,8 @@
+timestamp,source_ip,dest_ip,dest_port,protocol,action,hostname
+2025-10-30T02:05:00Z,203.0.113.45,10.10.5.10,22,TCP,allowed,scada-gateway-01.prod
+2025-10-30T02:15:00Z,203.0.113.45,10.10.5.10,3389,TCP,blocked,scada-gateway-01.prod
+2025-10-30T03:40:00Z,198.51.100.60,10.20.1.5,445,TCP,allowed,ad-controller-01.corp
+2025-10-30T04:10:00Z,198.51.100.40,10.30.2.20,9200,TCP,allowed,splunk-indexer-01.sec
+2025-10-30T05:25:00Z,198.51.100.40,10.30.2.20,443,TCP,allowed,splunk-indexer-01.sec
+2025-10-30T06:55:00Z,192.0.2.55,10.10.6.15,8080,TCP,allowed,ems-historian-01.prod
+2025-10-30T08:15:00Z,203.0.113.151,10.40.3.25,8443,TCP,allowed,backup-server-01.ops
