@@ -49,21 +49,31 @@ docker-compose up --build
 docker-compose up -d --build
 ```
 
-**First run takes 2-3 minutes to:**
-- Build Docker images
-- Install Python dependencies
-- Process synthetic data
-- Generate alerts
-- Call AI for analysis
+**⏰ Important - Wait Time:**
+- **First run** takes 2-3 minutes to build Docker images
+- **Data processing** takes 30-60 seconds (AI calls are slow)
+- **Wait 60 seconds** after services start before accessing dashboard
+- Watch logs: `docker-compose logs -f web` to see progress
+
+**What's happening:**
+1. Rules engine analyzes data → creates `alerts.json` (~10s)
+2. AI agent processes alerts with OpenRouter → creates `triage.json` (~30-60s)
+3. Web UI loads and displays triaged alerts ✅
 
 ## Step 4: Access Dashboard
 
-Open your browser:
+**After waiting 60 seconds**, open your browser:
 ```
 http://localhost:8080
 ```
 
 You should see security alerts with AI analysis!
+
+**If you see "Failed to load alerts":**
+- Wait another 30 seconds (AI processing takes time)
+- Check logs: `docker-compose logs agent`
+- Run diagnostics: `bash scripts/diagnose.sh`
+- See `TROUBLESHOOTING.md` for detailed help
 
 ## Step 5: Test Feedback Loop
 

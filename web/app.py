@@ -42,7 +42,8 @@ def load_json_file(filepath: str, default: Any = None) -> Any:
     """
     try:
         # Wait for file if it doesn't exist yet
-        max_retries = 5
+        # Increased timeout for AI processing (can take 30-60+ seconds)
+        max_retries = 30
         retry_count = 0
         
         while not os.path.exists(filepath) and retry_count < max_retries:
@@ -51,12 +52,19 @@ def load_json_file(filepath: str, default: Any = None) -> Any:
             retry_count += 1
         
         if not os.path.exists(filepath):
-            logger.warning(f"File not found: {filepath}")
+            logger.warning(f"File not found after {max_retries * 2} seconds: {filepath}")
+            return default if default is not None else []
+        
+        # Check if file is empty or still being written
+        file_size = os.path.getsize(filepath)
+        if file_size == 0:
+            logger.warning(f"File is empty: {filepath}")
             return default if default is not None else []
         
         with open(filepath, 'r') as f:
             data = json.load(f)
         
+        logger.info(f"Successfully loaded {filepath} ({file_size} bytes)")
         return data
     
     except json.JSONDecodeError as e:

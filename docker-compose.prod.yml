@@ -38,6 +38,7 @@ services:
       - "80:8080"
     volumes:
       - shared_data:/shared
+      - ./scripts:/scripts:ro
     environment:
       - TRIAGE_FILE=/shared/triage.json
       - FEEDBACK_FILE=/shared/feedback.json
@@ -47,6 +48,12 @@ services:
       - agent
     networks:
       - soc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
 
 networks:
   soc-network:
