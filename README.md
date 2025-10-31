@@ -2,7 +2,7 @@
 
 A self-contained, Dockerized demo application that simulates an AI-assisted Security Operations Center (SOC) for energy sector infrastructure. This demo analyzes static cybersecurity data and provides AI-generated threat insights, trend summaries, and response recommendations.
 
-## 🎯 Overview
+##  Overview
 
 This application demonstrates how an integrated AI assistant can analyze security events in an energy company environment:
 
@@ -11,7 +11,7 @@ This application demonstrates how an integrated AI assistant can analyze securit
 - **AI-Assisted Triage**: Uses a mock LLM service to generate contextual summaries and remediation recommendations
 - **Human-in-the-Loop**: Provides a web dashboard where analysts can review, approve, or reject alerts
 
-## 🏗️ Architecture
+##  Architecture
 
 The demo consists of four main components:
 
@@ -47,7 +47,7 @@ The demo consists of four main components:
    - Real-time statistics and severity breakdowns
    - Serves on `http://localhost:8080`
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Option 1: GitHub Pages (Static Demo)
 
@@ -102,7 +102,7 @@ rm -f shared/alerts.json shared/triage.json shared/feedback.json
 docker-compose up --build
 ```
 
-## 📊 Demo Data
+##  Demo Data
 
 The demo includes realistic synthetic data for an energy company:
 
@@ -136,7 +136,7 @@ The demo includes realistic synthetic data for an energy company:
    - Flags dangerous ports (Telnet 23, FTP 21, RDP 3389)
    - Example: Telnet connection to legacy HMI system
 
-## 🖥️ Dashboard Features
+##  Dashboard Features
 
 ### Statistics Panel
 - Total alerts count
@@ -161,7 +161,7 @@ Each alert displays:
 4. Add optional notes
 5. Feedback stored in `shared/feedback.json`
 
-## 🔧 Technical Details
+##  Technical Details
 
 ### Technology Stack
 - **Backend**: Python 3.11, Flask
@@ -229,7 +229,7 @@ energy-sector-ai-security-demo/
    - Serves HTTP dashboard
    - Manages `feedback.json`
 
-## 🔒 Security Considerations
+##  Security Considerations
 
 This is a **demonstration environment only**:
 
@@ -239,7 +239,7 @@ This is a **demonstration environment only**:
 - Mock LLM service (no API keys needed)
 - Not intended for production use
 
-## 🎓 Educational Use Cases
+##  Educational Use Cases
 
 This demo is designed for:
 
@@ -249,20 +249,6 @@ This demo is designed for:
 - Teaching Docker-based microservices architecture
 - Showcasing NERC CIP compliance concepts
 
-## 🔮 Future Enhancements
-
-Potential additions for extended demos:
-
-1. **Real LLM Integration**: Replace mock with OpenAI GPT-4 or local Llama models
-2. **GitHub Pages Live Demo**: ✅ Implemented - Static version available for easy sharing
-3. **Time-Series Analysis**: Add trending and anomaly detection over time
-4. **MITRE ATT&CK Mapping**: Link alerts to ATT&CK framework tactics
-4. **Automated Response**: Implement scripted remediation actions
-5. **Multi-User Support**: Add authentication and role-based access
-6. **Export Functionality**: Generate PDF reports and CSV exports
-7. **Integration APIs**: Connect to real SIEM/SOAR platforms
-
-## 📝 Customization
 
 ### Adding New Detection Rules
 
@@ -297,20 +283,11 @@ Edit `web/templates/dashboard.html`:
 - Add new data visualizations
 - Change color schemes in `<style>` section
 
-## 🤝 Contributing
-
-This is a demo project. Contributions welcome:
-- Add new detection rules
-- Improve AI summaries
-- Enhance UI/UX
-- Add documentation
-- Report bugs
-
-## 📄 License
+##  License
 
 See LICENSE file for details.
 
-## 🆘 Troubleshooting
+##  Troubleshooting
 
 ### Issue: Services fail to start
 ```bash
@@ -349,7 +326,7 @@ ports:
 chmod -R 777 shared/
 ```
 
-## 📧 Support
+##  Support
 
 For questions or issues:
 - Open a GitHub issue
