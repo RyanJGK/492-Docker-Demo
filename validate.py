@@ -121,6 +121,26 @@ def main():
         validate_json_file("shared/feedback.json")
     print()
     
+    # Check Docker Compose volume configurations
+    print("Checking Docker Compose configurations...")
+    compose_check = True
+    try:
+        with open("docker-compose.yml", 'r') as f:
+            compose_content = f.read()
+            if "shared:/shared:ro" in compose_content and "web:" in compose_content:
+                # Check if web service has read-only mount
+                web_section = compose_content.split("web:")[1].split("networks:")[0] if "web:" in compose_content else ""
+                if ":ro" in web_section:
+                    print("  ⚠ WARNING: Web service has read-only mount on shared volume")
+                    print("    This will prevent feedback submission from working!")
+                    compose_check = False
+            if compose_check:
+                print("✓ Docker Compose volume mounts configured correctly")
+    except Exception as e:
+        print(f"  ⚠ Could not validate docker-compose.yml: {e}")
+    results.append(compose_check)
+    print()
+    
     # Summary
     print("=" * 60)
     passed = sum(results)

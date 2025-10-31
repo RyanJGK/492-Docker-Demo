@@ -109,6 +109,8 @@ docker-compose up --build
 docker-compose up -d --build
 ```
 
+**⚠️ Important:** The web service has **read/write access** to the `shared/` volume to enable feedback submission. This is required for the learning loop to function correctly.
+
 ### Step 4: Access the Dashboard
 
 Open your browser and navigate to:

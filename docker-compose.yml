@@ -34,7 +34,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./shared:/shared:ro
+      - ./shared:/shared
     environment:
       - TRIAGE_FILE=/shared/triage.json
       - FEEDBACK_FILE=/shared/feedback.json
