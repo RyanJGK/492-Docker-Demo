@@ -1,0 +1,24 @@
+timestamp,user,location,city,country,lat,lon,source_ip,success
+2024-10-31T08:15:23Z,alice.chen@energycorp.com,chicago_office,Chicago,USA,41.8781,-87.6298,10.0.1.45,true
+2024-10-31T10:22:47Z,alice.chen@energycorp.com,moscow_vpn,Moscow,Russia,55.7558,37.6173,185.220.101.34,true
+2024-10-31T09:05:12Z,bob.martinez@energycorp.com,houston_plant,Houston,USA,29.7604,-95.3698,10.0.2.18,true
+2024-10-31T22:45:33Z,bob.martinez@energycorp.com,houston_plant,Houston,USA,29.7604,-95.3698,10.0.2.18,true
+2024-10-31T07:30:05Z,carol.johnson@energycorp.com,seattle_vpn,Seattle,USA,47.6062,-122.3321,73.158.64.21,true
+2024-10-31T15:18:44Z,carol.johnson@energycorp.com,seattle_office,Seattle,USA,47.6062,-122.3321,10.0.3.92,true
+2024-10-31T08:00:15Z,david.kim@energycorp.com,houston_field,Houston,USA,29.7604,-95.3698,10.0.2.55,true
+2024-10-31T13:22:08Z,david.kim@energycorp.com,dallas_field,Dallas,USA,32.7767,-96.7970,10.0.4.12,true
+2024-10-31T17:45:29Z,david.kim@energycorp.com,okc_field,Oklahoma City,USA,35.4676,-97.5164,10.0.5.31,true
+2024-10-31T09:15:33Z,eve.williams@energycorp.com,nyc_office,New York,USA,40.7128,-74.0060,10.0.6.88,true
+2024-10-31T14:30:22Z,eve.williams@energycorp.com,london_hotel,London,UK,51.5074,-0.1278,81.134.202.45,true
+2024-10-31T20:05:18Z,eve.williams@energycorp.com,dubai_hotel,Dubai,UAE,25.2048,55.2708,5.62.61.89,true
+2024-10-31T02:15:44Z,frank.patel@energycorp.com,mumbai_home,Mumbai,India,19.0760,72.8777,103.21.58.192,true
+2024-10-31T15:30:12Z,frank.patel@energycorp.com,austin_office,Austin,USA,30.2672,-97.7431,10.0.7.44,true
+2024-10-31T03:45:28Z,frank.patel@energycorp.com,mumbai_home,Mumbai,India,19.0760,72.8777,103.21.58.192,true
+2024-10-31T08:45:17Z,grace.lopez@energycorp.com,denver_office,Denver,USA,39.7392,-104.9903,10.0.8.22,true
+2024-10-31T16:20:35Z,grace.lopez@energycorp.com,denver_office,Denver,USA,39.7392,-104.9903,10.0.8.22,true
+2024-10-31T09:00:22Z,henry.wong@energycorp.com,sf_office,San Francisco,USA,37.7749,-122.4194,10.0.9.67,true
+2024-10-31T02:30:15Z,henry.wong@energycorp.com,sf_vpn,San Francisco,USA,37.7749,-122.4194,73.170.23.44,true
+2024-10-31T08:12:33Z,alice.chen@energycorp.com,chicago_office,Chicago,USA,41.8781,-87.6298,10.0.1.45,true
+2024-10-31T09:45:18Z,bob.martinez@energycorp.com,houston_plant,Houston,USA,29.7604,-95.3698,10.0.2.18,false
+2024-10-31T09:47:22Z,bob.martinez@energycorp.com,houston_plant,Houston,USA,29.7604,-95.3698,10.0.2.18,false
+2024-10-31T09:49:15Z,bob.martinez@energycorp.com,houston_plant,Houston,USA,29.7604,-95.3698,10.0.2.18,true

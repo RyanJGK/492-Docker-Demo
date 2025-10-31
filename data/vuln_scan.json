@@ -1,0 +1,98 @@
+[
+  {
+    "scan_id": "scan_2024103101",
+    "timestamp": "2024-10-31T06:00:00Z",
+    "host": "scada-gateway-01.prod",
+    "ip": "10.10.1.10",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2024-38063",
+        "severity": "critical",
+        "cvss_score": 9.8,
+        "description": "Windows TCP/IP Remote Code Execution Vulnerability",
+        "exploitable": true,
+        "patch_available": true
+      },
+      {
+        "cve": "CVE-2024-43461",
+        "severity": "high",
+        "cvss_score": 8.1,
+        "description": "Windows MSHTML Platform Spoofing Vulnerability",
+        "exploitable": true,
+        "patch_available": true
+      }
+    ]
+  },
+  {
+    "scan_id": "scan_2024103102",
+    "timestamp": "2024-10-31T06:00:00Z",
+    "host": "vpn-concentrator-01.dmz",
+    "ip": "10.10.2.10",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2024-3094",
+        "severity": "critical",
+        "cvss_score": 10.0,
+        "description": "XZ Utils Backdoor (liblzma)",
+        "exploitable": true,
+        "patch_available": true
+      },
+      {
+        "cve": "CVE-2023-4911",
+        "severity": "high",
+        "cvss_score": 7.8,
+        "description": "GNU C Library Buffer Overflow (Looney Tunables)",
+        "exploitable": true,
+        "patch_available": true
+      }
+    ]
+  },
+  {
+    "scan_id": "scan_2024103103",
+    "timestamp": "2024-10-31T06:00:00Z",
+    "host": "backup-server-01.ops",
+    "ip": "10.30.1.30",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2024-26169",
+        "severity": "high",
+        "cvss_score": 8.5,
+        "description": "Windows Error Reporting Service Elevation of Privilege",
+        "exploitable": false,
+        "patch_available": true
+      }
+    ]
+  },
+  {
+    "scan_id": "scan_2024103104",
+    "timestamp": "2024-10-31T06:00:00Z",
+    "host": "plc-controller-01.prod",
+    "ip": "10.10.1.100",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2024-6071",
+        "severity": "critical",
+        "cvss_score": 9.1,
+        "description": "Industrial PLC Authentication Bypass",
+        "exploitable": true,
+        "patch_available": false
+      }
+    ]
+  },
+  {
+    "scan_id": "scan_2024103105",
+    "timestamp": "2024-10-31T06:00:00Z",
+    "host": "rtu-gateway-01.prod",
+    "ip": "10.10.1.110",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2024-5432",
+        "severity": "high",
+        "cvss_score": 8.8,
+        "description": "RTU Gateway Command Injection",
+        "exploitable": true,
+        "patch_available": false
+      }
+    ]
+  }
+]

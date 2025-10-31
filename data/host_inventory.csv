@@ -1,0 +1,13 @@
+hostname,ip,os,last_patch_date,critical_apps,location
+scada-gateway-01.prod,10.10.1.10,Windows Server 2019,2024-08-15,SCADA Master,Houston Plant
+ems-historian-01.prod,10.10.1.20,Windows Server 2022,2024-10-20,EMS Historian,Houston Plant
+firewall-dmz-01.prod,10.10.2.5,Linux RHEL 8,2024-10-25,Firewall,DMZ
+ad-controller-01.corp,10.20.1.10,Windows Server 2022,2024-10-28,Active Directory,Corporate HQ
+splunk-indexer-01.sec,10.20.2.15,Linux Ubuntu 22.04,2024-10-29,Splunk Enterprise,Security Zone
+backup-server-01.ops,10.30.1.30,Windows Server 2019,2024-09-01,Veeam Backup,Operations Center
+vpn-concentrator-01.dmz,10.10.2.10,Linux Ubuntu 20.04,2024-07-20,Cisco AnyConnect,DMZ
+hmi-workstation-01.prod,10.10.1.50,Windows 10 Pro,2024-10-15,HMI Client,Control Room
+plc-controller-01.prod,10.10.1.100,Embedded Linux,2024-06-10,PLC Firmware,Substation A
+rtu-gateway-01.prod,10.10.1.110,Embedded Linux,2024-05-25,RTU Gateway,Substation B
+file-server-01.corp,10.20.1.50,Windows Server 2019,2024-09-15,SMB File Shares,Corporate HQ
+web-proxy-01.dmz,10.10.2.20,Linux Debian 11,2024-10-22,Squid Proxy,DMZ
